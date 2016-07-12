@@ -21,8 +21,8 @@ feature 'User can sign in and out' do
       click_link 'Sign Up'
       fill_in 'Email', with: 'test@test.com'
       fill_in 'Password', with: 'testtest'
-      fill_in 'Password Confirmation', with: 'testtest'
-      click_button 'Sign Up'
+      fill_in 'Password confirmation', with: 'testtest'
+      click_button 'Sign up'
     end
 
     it 'should see "sign out" link' do
@@ -36,6 +36,5 @@ feature 'User can sign in and out' do
       expect(page).not_to have_link('Sign Up')
     end
   end
-
 
 end
