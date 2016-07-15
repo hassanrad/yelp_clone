@@ -40,7 +40,7 @@ class RestaurantsController < ApplicationController
       @restaurant.update(restaurant_params)
       redirect_to '/'
     else
-      flash[:notice] = 'Only the restaurant owner can edit this restaurant'
+      flash[:notice] = 'You cannot edit a restaurant not owned by you'
       redirect_to '/'
     end
   end
@@ -52,7 +52,7 @@ class RestaurantsController < ApplicationController
       flash[:notice] = 'Restaurant deleted successfully'
       redirect_to '/restaurants'
     else
-      flash[:notice] = 'You cannot delete restaurant not added by you'
+      flash[:notice] = 'You cannot delete a restaurant not owned by you'
       redirect_to '/restaurants'
     end
   end

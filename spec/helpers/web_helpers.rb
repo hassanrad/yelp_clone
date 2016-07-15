@@ -15,7 +15,7 @@ def sign_in(email = 'test@test.com', password = 'password')
   click_button 'Sign in'
 end
 
-def add_restaurant(name = 'KFC', description = 'Super good chicken')
+def add_restaurant(name = 'KFC', description = 'Deep fried goodness')
   visit '/'
   click_link 'Add a restaurant'
   fill_in 'Name', with: name
