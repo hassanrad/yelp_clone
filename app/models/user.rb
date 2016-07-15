@@ -1,4 +1,9 @@
 class User < ActiveRecord::Base
+
+  has_many :restaurants
+  has_many :reviews
+  has_many :reviewed_restaurants, through: :reviews, source: :restaurant
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :registerable,
@@ -12,6 +17,10 @@ class User < ActiveRecord::Base
       # user.name = auth.info.name
       # user.image = auth.info.image
     end
+  end
+
+  def has_reviewed?(restaurant)
+    reviewed_restaurants.include? restaurant
   end
 
 end

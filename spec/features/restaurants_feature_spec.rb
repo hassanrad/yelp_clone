@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 feature 'restaurants' do
+
+  before do
+    visit '/users/sign_up'
+    fill_in 'user_email', with: 'test@test.com'
+    fill_in 'user_password', with: 'test123'
+    fill_in 'user_password_confirmation', with: 'test123'
+    click_button 'Sign up'
+    click_link 'Sign Out'
+  end
+
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
       visit '/restaurants'
@@ -8,7 +18,16 @@ feature 'restaurants' do
       expect(page).to have_link 'Add a restaurant'
     end
   end
+
   context 'restaurants have been added' do
+
+    before do
+      visit '/users/sign_in'
+      fill_in 'user_email', with: 'test@test.com'
+      fill_in 'user_password', with: 'test123'
+      click_button 'Log in'
+    end
+
     before do
       Restaurant.create(name: 'KFC')
     end
@@ -19,7 +38,16 @@ feature 'restaurants' do
       expect(page).to_not have_content 'No restaurants yet'
     end
   end
+
   context 'creating restaurants' do
+
+    before do
+      visit '/users/sign_in'
+      fill_in 'user_email', with: 'test@test.com'
+      fill_in 'user_password', with: 'test123'
+      click_button 'Log in'
+    end
+
     scenario 'prompts user to fill out a form, then displays the new restaurant' do
       visit '/restaurants'
       click_link 'Add a restaurant'
@@ -53,6 +81,14 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
+
+    before do
+      visit '/users/sign_in'
+      fill_in 'user_email', with: 'test@test.com'
+      fill_in 'user_password', with: 'test123'
+      click_button 'Log in'
+    end
+
     before {Restaurant.create name: 'KFC', description: 'Deep fried goodness'}
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
@@ -67,12 +103,29 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
+
+    before do
+      visit '/users/sign_in'
+      fill_in 'user_email', with: 'test@test.com'
+      fill_in 'user_password', with: 'test123'
+      click_button 'Log in'
+    end
+
     before {Restaurant.create name: 'KFC', description: 'Deep fried goodness' }
     scenario 'removes a restaurant when the user clicks a delete link' do
       visit '/restaurants'
       click_link 'Delete KFC'
       expect(page).not_to have_content('KFC')
       expect(page).to have_content('Restaurant deleted successfully')
+    end
+  end
+
+  context 'not being logged in' do
+    scenario 'does not allow for creation of new restaurant' do
+      visit '/restaurants'
+      click_link 'Add a restaurant'
+      expect(page).to have_content('You need to sign in or sign up before continuing.')
+      expect(page).not_to have_content('Create Restaurant')
     end
   end
 end
